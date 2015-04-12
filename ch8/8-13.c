@@ -1,4 +1,7 @@
+//调用system函数
+
 #include <stdio.h>
+#include <stdlib.h>//exit,
 #include <sys/wait.h>
 
 void
@@ -15,4 +18,24 @@ pr_exit(int status)
 #endif
 	else if (WIFSTOPPED(status))
 		printf("child stopped, signal number= %d\n", WSTOPSIG(status));
+}
+
+int
+main(void)
+{
+	int status;
+
+	if ((status = system("date")) < 0)
+		printf("system() error\n");
+	pr_exit(status);
+
+	if ((status = system("nosuchcommand")) < 0)
+		printf("system() error\n");
+	pr_exit(status);
+
+	if ((status = system("who; exit 44")) < 0)
+		printf("system() error\n");
+	pr_exit(status);
+
+	exit(0);
 }
